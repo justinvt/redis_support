@@ -66,20 +66,4 @@ class TestClass
   redis_key :test_novar, "test:redis"
   redis_key :test_var, "test:redis:VAR"
   redis_key :test_vars, "test:redis:VAR_ONE:VAR_TWO:append"
-
-  def novar_key
-    Keys.test_novar
-  end
-
-  def var_key
-    Keys.test_var("variable")
-  end
-
-  def vars_key
-    Keys.test_vars("variable", "id")
-  end
-
-  def use_redis_set
-    redis.set("superman", 1)
-  end
 end

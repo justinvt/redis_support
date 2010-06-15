@@ -2,19 +2,20 @@ require File.dirname(__FILE__) + '/helper'
 
 context "Redis Support" do
   setup do
+    TestClass.redis.flushall
     @test_class = TestClass.new
   end
 
   test "redis connection works as expected" do
     assert_equal @test_class.redis, TestClass.redis
-    assert_equal "OK", @test_class.use_redis_set
+    assert_equal "OK", @test_class.redis.set("superman", 1)
     assert_equal "1", @test_class.redis.get("superman")
   end
 
   test "redis keys are created correctly in normal conditions" do
-    assert_equal "test:redis", @test_class.novar_key
-    assert_equal "test:redis:variable", @test_class.var_key
-    assert_equal "test:redis:variable:id:append", @test_class.vars_key
+    assert_equal "test:redis", TestClass::Keys.test_novar
+    assert_equal "test:redis:variable", TestClass::Keys.test_var("variable")
+    assert_equal "test:redis:variable:id:append", TestClass::Keys.test_vars("variable", "id")
   end
 
   test "redis key should be able to create key" do
@@ -38,7 +39,7 @@ context "Redis Support" do
     end    
   end
 
-  test "redis keys are fails gracefully, syntax error, when key space is fucked" do
+  test "redis keys fails gracefully, syntax error, when key space is fucked" do
     assert_raise(SyntaxError) do
       TestClass.redis_key :failure, "test:redis:VAR:VAR:oops"
     end
