@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
   s.description  = "Module for adding redis functionality to classes: simple key namespacing and locking and connections"
   s.files        = Dir['lib/**/*.rb']
   s.require_path = "lib"
-  s.autorequire  = "redis_support"
   s.has_rdoc     = false
   s.add_dependency("redis")
 end
