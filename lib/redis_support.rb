@@ -15,15 +15,15 @@ module RedisSupport
   def redis=(connection)
     if connection.respond_to? :split
       host, port, db = connection.split(':')
-      @redis = Redis.new(:host => host,:port => port,:thread_safe => true,:db => db)
+      @@redis = Redis.new(:host => host,:port => port,:thread_safe => true,:db => db)
     else
-      @redis = connection
+      @@redis = connection
     end
   end
 
   def redis
-    return @redis if @redis
-    self.redis = $redis || 'localhost:6379'
+    return @@redis if @@redis
+    self.redis = @@redis || 'localhost:6379'
     self.redis
   end
 

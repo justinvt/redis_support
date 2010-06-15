@@ -12,6 +12,13 @@ context "Redis Support" do
     assert_equal "1", @test_class.redis.get("superman")
   end
 
+  test "redis connections changes as expected" do
+    TestClass.redis = "localhost:6379"
+    assert_equal @test_class.redis, TestClass.redis
+    @test_class.redis = "localhost:9736"
+    assert_equal @test_class.redis, TestClass.redis
+  end
+
   test "redis keys are created correctly in normal conditions" do
     assert_equal "test:redis", TestClass::Keys.test_novar
     assert_equal "test:redis:variable", TestClass::Keys.test_var("variable")

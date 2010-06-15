@@ -38,7 +38,16 @@ end
 
 puts "Starting redis for testing at localhost:9736..."
 `redis-server #{dir}/redis-test.conf`
-$redis = Redis.new( :host => 'localhost', :port => 9736, :db => 0, :thread_safe => true ) 
+
+class TestClass
+  include RedisSupport
+  
+  redis_key :test_novar, "test:redis"
+  redis_key :test_var, "test:redis:VAR"
+  redis_key :test_vars, "test:redis:VAR_ONE:VAR_TWO:append"
+end
+
+TestClass.redis = "localhost:9736"
 
 ##
 # test/spec/mini 3
@@ -58,12 +67,4 @@ def context(*args, &block)
   end
   (class << klass; self end).send(:define_method, :name) { name.gsub(/\W/,'_') }
   klass.class_eval &block
-end
-
-class TestClass
-  include RedisSupport
-  
-  redis_key :test_novar, "test:redis"
-  redis_key :test_var, "test:redis:VAR"
-  redis_key :test_vars, "test:redis:VAR_ONE:VAR_TWO:append"
 end
