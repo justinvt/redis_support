@@ -13,5 +13,4 @@ Gem::Specification.new do |s|
   s.autorequire  = "redis_support"
   s.has_rdoc     = false
   s.add_dependency("redis")
-  s.add_dependency("redis-namespace")
 end
