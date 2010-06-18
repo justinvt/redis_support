@@ -25,7 +25,7 @@ declare that namespace and access it later.
       attr_accessor :id
 
       def email
-        $redis.get Keys.email( self.id )
+        redis.get Keys.email( self.id )
       end
     end
 
