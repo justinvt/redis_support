@@ -9,7 +9,7 @@ begin
     gem.description = "Module for adding redis functionality to classes: simple key namespacing and locking and connections"
     gem.email = "dolores@doloreslabs.com"
     gem.homepage = "http://github.com/dolores/redis_support"
-    gem.authors = ["dolores"]
+    gem.authors = ["Brian P O'Rourke", "John Le"]
     gem.files = Dir['lib/**/*.rb']
     gem.add_dependency "redis", ">= 1.0.4"
   end
