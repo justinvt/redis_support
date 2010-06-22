@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 require 'redis'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/"))
@@ -5,7 +9,6 @@ require 'redis_support/class_extensions'
 require 'redis_support/locks'
 
 module RedisSupport
-
   # Inspired/take from the redis= in Resque
   #
   # Accepts:
@@ -22,9 +25,7 @@ module RedisSupport
   end
 
   def redis
-    return @@redis if @@redis
-    self.redis = @@redis || 'localhost:6379'
-    self.redis
+    @@redis
   end
 
   def keys
@@ -36,6 +37,8 @@ module RedisSupport
   def self.included(model)
     model.extend ClassMethods
     model.extend RedisSupport
+    model.redis = @redis
   end
 
+  extend self
 end

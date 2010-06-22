@@ -6,6 +6,15 @@ common actions for the Redis key-value store. It is not an
 object-relational mapper, does not attempt to comprehensively solve
 all of your storage problems, and does not make julienne fries.
 
+Redis Addition
+--------------
+
+Provides a connection to redis which is the same across all classes
+which use RedisSupport as a mixin.  This connection can be set by calling,
+for example:
+
+    RedisSupport.redis = "localhost:6379"
+
 Key Support
 -----------
 

@@ -1,7 +1,25 @@
 require File.dirname(__FILE__) + '/helper'
 
+context "Redis Support setup" do
+  setup do
+    RedisSupport.redis = "localhost:9736"
+  end
+
+  test "redis is loaded correctly" do
+    assert RedisSupport.redis
+    assert TestClass.redis
+    assert SecondTest.redis
+    assert_equal 9736, RedisSupport.redis.client.port
+    assert_equal 9736, TestClass.redis.client.port
+    assert_equal 9736, SecondTest.redis.client.port
+    assert_equal "localhost", TestClass.redis.client.host
+    assert_equal RedisSupport.redis, TestClass.redis
+  end
+end
+
 context "Redis Support" do
   setup do
+    RedisSupport.redis = "localhost:9736"
     TestClass.redis.flushall
     @test_class = TestClass.new
   end

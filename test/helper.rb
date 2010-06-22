@@ -47,7 +47,9 @@ class TestClass
   redis_key :test_vars, "test:redis:VAR_ONE:VAR_TWO:append"
 end
 
-TestClass.redis = "localhost:9736"
+class SecondTest
+  include RedisSupport
+end
 
 ##
 # test/spec/mini 3
