@@ -19,6 +19,4 @@ rdoc
 pkg
 
 ## PROJECT::SPECIFIC
-*.gem
-*.gemspec
 .bundle
