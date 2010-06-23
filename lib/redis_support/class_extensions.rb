@@ -6,6 +6,14 @@ module RedisSupport
   VAR_PATTERN = /^[A-Z]+(_[A-Z]+)*$/
   STR_PATTERN = /^[a-z_]+$/
   module ClassMethods
+    def redis=(connection)
+      @redis = RedisSupport.redis_connect(connection)
+    end
+
+    def redis
+      @redis || RedisSupport.redis
+    end
+    
     # Goal is to allow a class to declare a redis key/property 
     # The key is a colon delimited string where variables
     # are listed are upper case (underscores inbetween) and

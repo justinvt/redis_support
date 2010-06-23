@@ -1,8 +1,10 @@
 require File.dirname(__FILE__) + '/helper'
 
-context "Redis Support setup" do
+context "Redis Support Setup" do
   setup do
     RedisSupport.redis = "localhost:9736"
+    TestClass.redis = nil
+    SecondTest.redis = nil
   end
 
   test "redis is loaded correctly" do
@@ -20,6 +22,7 @@ end
 context "Redis Support" do
   setup do
     RedisSupport.redis = "localhost:9736"
+    TestClass.redis = nil
     TestClass.redis.flushall
     @test_class = TestClass.new
   end
@@ -31,10 +34,9 @@ context "Redis Support" do
   end
 
   test "redis connections changes as expected" do
-    TestClass.redis = "localhost:6379"
-    assert_equal @test_class.redis, TestClass.redis
-    @test_class.redis = "localhost:9736"
-    assert_equal @test_class.redis, TestClass.redis
+    TestClass.redis = "localhost:2345"
+    assert_equal @test_class.redis.client.port, RedisSupport.redis_connect("localhost:2345").client.port
+    assert_equal TestClass.redis.client.port, RedisSupport.redis_connect("localhost:2345").client.port
   end
 
   test "redis keys are created correctly in normal conditions" do
@@ -67,6 +69,47 @@ context "Redis Support" do
   test "redis keys fails gracefully, syntax error, when key space is fucked" do
     assert_raise(SyntaxError) do
       TestClass.redis_key :failure, "test:redis:VAR:VAR:oops"
+    end
+  end
+end
+
+context "Including Redis Support" do
+  setup do
+    class Foo
+      include RedisSupport
+    end
+    
+    class Bar
+      include RedisSupport
+    end
+
+    Foo.redis = "localhost:2345"
+    Bar.redis = "localhost:3456"
+
+    @foo = Foo.new
+  end
+
+  test "return different server definitions when set" do
+    RedisSupport.redis = Redis.new(:port => 1234, :host => "localhost")
+    assert_equal Foo.redis, Foo.redis # I'm sane, really.
+    assert_not_equal Foo.redis, Bar.redis
+    assert_not_equal Foo.redis, RedisSupport.redis
+    assert_equal @foo.redis, Foo.redis
+
+    assert_raise(NoMethodError) do
+      @foo.redis = "localhost:3456" 
+    end
+  end
+
+  test "same test runs twice in a row (return different server definitions when set)" do
+    RedisSupport.redis = Redis.new(:port => 1234, :host => "localhost")
+    assert_equal Foo.redis, Foo.redis # I'm sane, really.
+    assert_not_equal Foo.redis, Bar.redis
+    assert_not_equal Foo.redis, RedisSupport.redis
+    assert_equal @foo.redis, Foo.redis
+
+    assert_raise(NoMethodError) do
+      @foo.redis = "localhost:3456" 
     end
   end
 end
