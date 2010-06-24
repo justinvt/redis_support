@@ -29,7 +29,8 @@ module RedisSupport
     # Returns the redis key.
     def redis_key( name, keystruct )
       if Keys.methods.include? name.to_s
-        raise DuplicateRedisKeyDefinitionError
+        return
+        # raise DuplicateRedisKeyDefinitionError
       end
       
       key = keystruct.split(":")
