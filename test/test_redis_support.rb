@@ -52,8 +52,13 @@ context "Redis Support" do
   end
 
   test "redis keys are not created if the keyname was previously used" do
-    assert_raise(RedisSupport::DuplicateRedisKeyDefinitionError) do
-      TestClass.redis_key :test_var, "this:should:fail"
+    # assert_raise(RedisSupport::DuplicateRedisKeyDefinitionError) do
+    #   TestClass.redis_key :test_var, "this:should:fail"
+    # end
+    
+    # we are currently not using this feature
+    assert_nothing_raised do
+      TestClass.redis_key :test_var, "this:shouldnot:fail:anymore"
     end
   end
 
