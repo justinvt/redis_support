@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{redis_support}
-  s.version = "0.0.5"
+  s.version = "0.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian P O'Rourke", "John Le"]
-  s.date = %q{2010-06-23}
+  s.date = %q{2010-06-24}
   s.description = %q{Module for adding redis functionality to classes: simple key namespacing and locking and connections}
   s.email = %q{dolores@doloreslabs.com}
   s.extra_rdoc_files = [
