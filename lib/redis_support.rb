@@ -8,7 +8,11 @@ require 'redis_support/locks'
 
 module RedisSupport
   def redis
-    self.class.redis
+    if( self.class.respond_to?(:redis) )
+      self.class.redis
+    else
+      @redis || RedisSupport.redis
+    end
   end
 
   def keys

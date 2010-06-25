@@ -118,3 +118,24 @@ context "Including Redis Support" do
     end
   end
 end
+
+
+context "Including Redis Support in Module" do
+  setup do
+    RedisSupport.redis = Redis.new(:port => 9999, :host => "localhost")
+    
+    module FooBar
+      include RedisSupport
+      extend self
+
+      redis_key :tester, "testing:include"
+    end
+
+    FooBar.redis = "localhost:1234"
+  end
+
+  test "the include of RedisSupport in a module" do
+    assert_equal 1234, FooBar.redis.client.port
+    assert_equal 9999, RedisSupport.redis.client.port
+  end
+end
