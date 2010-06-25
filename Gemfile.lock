@@ -1,0 +1,33 @@
+--- 
+dependencies: 
+  rake: 
+    group: 
+    - :default
+    version: ">= 0"
+  jeweler: 
+    group: 
+    - :default
+    version: ">= 0"
+  redis: 
+    group: 
+    - :default
+    version: ">= 0"
+specs: 
+- rake: 
+    version: 0.8.7
+- json_pure: 
+    version: 1.4.3
+- gemcutter: 
+    version: 0.5.0
+- git: 
+    version: 1.2.5
+- rubyforge: 
+    version: 2.0.4
+- jeweler: 
+    version: 1.4.0
+- redis: 
+    version: 2.0.3
+hash: 422fbd591e202eca3708e65dce66e8c1c4994bd6
+sources: 
+- Rubygems: 
+    uri: http://rubygems.org
