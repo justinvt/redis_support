@@ -76,6 +76,13 @@ context "Redis Support" do
       TestClass.redis_key :failure, "test:redis:VAR:VAR:oops"
     end
   end
+
+  test "redis keys can be redefined" do
+    assert_equal "test:redis:variable:id:append", TestClass::Keys.test_vars("variable", "id")
+
+    TestClass.redefine_redis_key :test_vars, "new:definition:redis:key:VAR:ID"
+    assert_equal "new:definition:redis:key:variable:id", TestClass::Keys.test_vars("variable", "id")
+  end
 end
 
 context "Including Redis Support" do
