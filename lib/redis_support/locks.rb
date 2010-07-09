@@ -16,6 +16,15 @@ module RedisSupport
       release_redis_lock( key_to_lock )
     end
 
+    # Throttle a block of code so it is only executed at most every
+    # `expiration` seconds. The block is skipped if it has been run
+    # more recently.
+    #
+    # Returns nothing
+    def redis_throttle( key_to_lock, expiration = 30 )
+      yield if acquire_redis_lock_nonblock( key_to_lock, expiration )
+    end
+
     # Acquire a lock on a key in our Redis database. This is a blocking
     # call. It sleeps until the lock has been successfully acquired.
     #
@@ -24,6 +33,19 @@ module RedisSupport
     #   acquire_redis_lock( key.my_key )
     #   # do some stuff on my_key
     #   release_redis_lock( key.my_key )
+    #
+    # interval    - sleep interval for checking the lock's status.
+    #
+    # Returns nothing.
+    def acquire_redis_lock( key_to_lock, expiration = 30, interval = 1 )
+      until acquire_redis_lock_nonblock( key_to_lock, expiration )
+        sleep interval
+      end
+    end
+
+    # Attempt to acquire a lock on a key in our Redis database.
+    #
+    # Returns true on success and false on failure
     #
     # Described in detail here:
     #
@@ -40,30 +62,19 @@ module RedisSupport
     #               amount of time others will wait for you, not the amount of time
     #               you will wait to acquire the lock.
     #
-    # interval    - sleep interval for checking the lock's status.
-    #   
-    # Returns nothing.
-    def acquire_redis_lock( key_to_lock, expiration = 30, interval = 1 )
+    def acquire_redis_lock_nonblock( key_to_lock, expiration = 30 )
       key = lock_key( key_to_lock )
-      until redis.setnx key, timeout_i( expiration )
+      if redis.setnx key, timeout_i( expiration )
+        return true
+      else
         if redis.get( key ).to_i < Time.now.to_i
           old_timeout = redis.getset( key, timeout_i( expiration ) ).to_i
           if old_timeout < Time.now.to_i
-            return # got it!
+            return true
           end
-        else
-          sleep interval
         end
       end
-    end
-
-    # Acquire a redis lock only if it can be acquired
-    # is a nonblocking action
-    #
-    # Returns true on success and false on failure
-    def acquire_redis_lock_nonblock( key_to_lock, expiration = 30 ) 
-      key = lock_key( key_to_lock ) 
-      redis.setnx key, timeout_i( expiration )
+      false
     end
     
     # See docs for acquire_redis_lock above
@@ -95,6 +106,5 @@ module RedisSupport
     def timeout_i( timeout )
       timeout.seconds.from_now.to_i
     end
-
   end
 end
