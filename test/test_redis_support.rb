@@ -83,6 +83,15 @@ context "Redis Support" do
     TestClass.redefine_redis_key :test_vars, "new:definition:redis:key:VAR:ID"
     assert_equal "new:definition:redis:key:variable:id", TestClass::Keys.test_vars("variable", "id")
   end
+
+  test "a nonexistent key when redefined doesn't fail" do
+    assert_raise(NoMethodError) do
+      TestClass::Keys.test_redefine_notexist("variable", "id")
+    end
+
+    TestClass.redefine_redis_key :test_redefine_notexist, "nonexistent:redis:key:VAR:ID"
+    assert_equal "nonexistent:redis:key:variable:id", TestClass::Keys.test_redefine_notexist("variable", "id")
+  end
 end
 
 context "Including Redis Support" do

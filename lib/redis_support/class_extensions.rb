@@ -63,11 +63,13 @@ module RedisSupport
     end
 
     def redefine_redis_key( name, keystruct )
-      Keys.class_eval <<-RUBY
-        class << self
-          undef #{name}
-        end
-      RUBY
+      if Keys.methods.include? name.to_s
+        Keys.class_eval <<-RUBY
+          class << self
+            undef #{name}
+          end
+        RUBY
+      end
       redis_key(name, keystruct)
     end
   end
