@@ -65,3 +65,7 @@ attempts to run it at the same time:
       end
     end
 
+Issues
+------
+
+* When RedisSupport.redis is called but not yet set, there is a stack-level too deep error though it should just return nil.
