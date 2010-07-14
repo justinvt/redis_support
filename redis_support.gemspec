@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian P O'Rourke", "John Le"]
-  s.date = %q{2010-07-08}
+  s.date = %q{2010-07-14}
   s.description = %q{Module for adding redis functionality to classes: simple key namespacing and locking and connections}
   s.email = %q{dolores@doloreslabs.com}
   s.extra_rdoc_files = [
@@ -26,8 +26,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A Redis Support module}
   s.test_files = [
-    "test/helper.rb",
-     "test/test_redis_support.rb"
+    "test/test_redis_support.rb",
+     "test/helper.rb"
   ]
 
   if s.respond_to? :specification_version then
