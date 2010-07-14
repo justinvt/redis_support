@@ -19,6 +19,20 @@ context "Redis Support Setup" do
   end
 end
 
+context "Redis Support No Setup" do
+  setup do
+    RedisSupport.redis=nil
+  end
+
+  test "redis returns nil when nil" do 
+    assert_equal RedisSupport.redis, nil
+    assert_equal TestClass.redis, nil
+    assert_equal SecondTest.redis, nil
+
+    assert_equal TestClass.new.redis, nil
+  end
+end
+
 context "Redis Support" do
   setup do
     RedisSupport.redis = "localhost:9736"

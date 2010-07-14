@@ -11,7 +11,11 @@ module RedisSupport
     end
 
     def redis
-      @redis || RedisSupport.redis
+      if(self == RedisSupport)
+        @redis
+      else
+        @redis || RedisSupport.redis
+      end
     end
     
     # Goal is to allow a class to declare a redis key/property 
