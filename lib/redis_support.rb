@@ -19,7 +19,11 @@ module RedisSupport
     Keys
   end
 
-  module Keys ; end
+  module Keys
+    def self.keystructs
+      @keystructs ||= []
+    end
+  end
 
   def self.included(model)
     model.extend ClassMethods

@@ -106,6 +106,12 @@ context "Redis Support" do
     TestClass.redefine_redis_key :test_redefine_notexist, "nonexistent:redis:key:VAR:ID"
     assert_equal "nonexistent:redis:key:variable:id", TestClass::Keys.test_redefine_notexist("variable", "id")
   end
+
+  test "registered keys should show up in keystruct" do
+   ["test:redis", "test:redis:VAR", "test:redis:VAR_ONE:VAR_TWO:append"].each do |key|
+     assert TestClass::Keys.keystructs.include?(key)
+   end
+  end
 end
 
 context "Including Redis Support" do

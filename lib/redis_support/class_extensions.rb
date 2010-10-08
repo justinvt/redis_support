@@ -64,6 +64,7 @@ module RedisSupport
           "#{strs.join(":")}"
         end
       RUBY
+      RedisSupport::Keys.keystructs << keystruct
     end
 
     def redefine_redis_key( name, keystruct )
