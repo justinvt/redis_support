@@ -23,6 +23,11 @@ module RedisSupport
     def self.keystructs
       @keystructs ||= []
     end
+    
+    #returns a string suitable for randomizing a redis key
+    def self.random_key_string
+      "#{Time.now.to_i}#{rand(10000)}" 
+    end
   end
 
   def self.included(model)
