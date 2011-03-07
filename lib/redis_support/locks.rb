@@ -88,6 +88,14 @@ module RedisSupport
       redis.exists lock_key(locked_key) 
     end
 
+    def is_redis_locked?( locked_key )
+      locked_until(locked_key) > Time.now.to_i
+    end
+
+    def locked_until(locked_key)
+      redis.get( lock_key(locked_key) ).to_i
+    end
+
     private
 
     def lock_key( key_to_lock )
